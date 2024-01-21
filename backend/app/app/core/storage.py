@@ -1,9 +1,9 @@
+from etlrules import Plan
 import os
 from pathlib import Path
-from typing import Union
 
 from app.core.config import settings
-from app.models.data import FolderModel, PlanYmlFileModel
+from app.models.data import FolderModel, PlanYmlFileModel, PlanModel
 
 
 def resolve_folder(full_path: str) -> FolderModel:
@@ -51,3 +51,10 @@ def get_folders(root_dir: Path) -> list[FolderModel]:
         ))
 
     return folders
+
+
+def write_plan(path: str, plan: PlanModel) -> None:
+    plan_instance = Plan.from_dict(plan, settings.ETLRULES_BACKEND)
+    yml = plan_instance.to_yaml()
+    with open(path, encoding="utf-8") as f:
+        f.write(yml)

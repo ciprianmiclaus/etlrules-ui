@@ -38,6 +38,8 @@ class Settings(BaseSettings):
     STORAGE_ROOT_DIR_NAME: str = "root"
     STORAGE_FOLLOW_SYMLINKS: bool = True
 
+    ETLRULES_BACKEND: str = "pandas"
+
     class Config:
         case_sensitive = True
 
