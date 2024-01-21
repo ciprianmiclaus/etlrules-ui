@@ -1,7 +1,9 @@
+import os
+from pathlib import Path
 import secrets
 from typing import List, Optional, Union
 
-from pydantic import AnyHttpUrl, HttpUrl, validator
+from pydantic import AnyHttpUrl, DirectoryPath, HttpUrl, validator
 from pydantic_settings import BaseSettings
 
 
@@ -31,6 +33,10 @@ class Settings(BaseSettings):
         if not v or len(v) == 0:
             return None
         return v
+
+    STORAGE_DIR: DirectoryPath = Path(os.path.expanduser('~'), 'etlrules')
+    STORAGE_ROOT_DIR_NAME: str = "root"
+    STORAGE_FOLLOW_SYMLINKS: bool = True
 
     class Config:
         case_sensitive = True
