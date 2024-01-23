@@ -103,18 +103,40 @@ export default function StorageTree() {
         ];
         //return INITIAL_STATE;
         const state: TreeNodeInfo[] = [];
-        each(folders, folder => {
-            console.log(folder);
-            state.push({
-                id: 0,
+
+        let folder_id = 0;
+        const get_folders_state = (folder) => {
+            let folder_child_nodes = [];
+            let folder_state = {
+                id: folder_id++,
                 hasCaret: true,
                 icon: "folder-open",
+                isExpanded: true,
                 label: (
                     <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                         {folder.name}
                     </ContextMenu>
                 )
-            })
+            };
+            each(folder.sub_folders, (sub_folder) => {
+                folder_child_nodes.push(get_folders_state(sub_folder));
+            });
+            each(folder.plan_files, (plan_file) => {
+                folder_child_nodes.push({
+                    id: folder_id++,
+                    icon: "document",
+                    label: (
+                        <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
+                            {plan_file.name}
+                        </ContextMenu>
+                    )
+                })
+            });
+            folder_state.childNodes = folder_child_nodes;
+            return folder_state;
+        };
+        each(folders, folder => {
+            state.push(get_folders_state(folder));
         });
         return state;
     }
