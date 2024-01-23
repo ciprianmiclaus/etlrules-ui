@@ -10,7 +10,7 @@ class PlanYmlFileModel(BaseModel):
 class FolderModel(BaseModel):
     name: str
     full_path: str
-    is_root: bool=False
+    sub_folders: list['FolderModel']
     plan_files: list[PlanYmlFileModel]
 
 
